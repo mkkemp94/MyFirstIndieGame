@@ -21,6 +21,9 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 
+		// Update the keyforce.
+		GameInput.Update();
+
 		// Render game gameObject.
 		gameObject.updatePosition();
 		gameObject.draw();
