@@ -12,6 +12,7 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		TextManager.SetSpriteBatch(batch);
 		gameObject = new GameObject("badlogic.jpg", batch, 0, 0);
 	}
 
@@ -27,6 +28,9 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 		// Render game gameObject.
 		gameObject.updatePosition();
 		gameObject.draw();
+
+		// Draw text to screen. Useful for debugging.
+		TextManager.Draw("X: " + gameObject.x + "Y: " + gameObject.y);
 
 		batch.end();
 	}
