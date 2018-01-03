@@ -33,8 +33,8 @@ public class GameObject {
     public void updatePosition() {
         int speed = 5;
 
-        x += GameInput.KeyForce.x * speed;
-        y += GameInput.KeyForce.y * speed;
+        x += GameInput.KeyForce.x * speed * Time.time;
+        y += GameInput.KeyForce.y * speed * Time.time;
     }
 
     /**

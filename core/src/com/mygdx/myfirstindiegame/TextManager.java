@@ -1,5 +1,6 @@
 package com.mygdx.myfirstindiegame;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,6 +15,8 @@ public class TextManager {
     private static SpriteBatch spriteBatchHandler;
 
     public static void SetSpriteBatch(SpriteBatch batch) {
+        bitmapFont.getData().scale(2);
+        bitmapFont.setColor(Color.CYAN);
         spriteBatchHandler = batch;
     }
 

@@ -2,6 +2,7 @@ package com.mygdx.myfirstindiegame;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -68,13 +69,12 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 		GameInput.Update();
 		gameObject.updatePosition();
 
-		// Center on player
-//		camera.position.set(gameObject.x, gameObject.y, 0);
-
 		// Still center, but clamp screen
 		camera.position.x = Math.min(Math.max(gameObject.x, windowWidth / 2), levelPixelWidth - windowWidth / 2);
 		camera.position.y = Math.min(Math.max(gameObject.y, windowHeight / 2), levelPixelHeight - windowHeight / 2);
 		camera.update();
+
+		Time.Update();
 
 		tiledMapRenderer.setView(camera);
 		tiledMapRenderer.render();
@@ -87,9 +87,14 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 		gameObject.draw();
 
 		// Draw text to screen. Useful for debugging.
-		TextManager.Draw("X: " + gameObject.x + "Y: " + gameObject.y, camera);
+		TextManager.Draw("X: " + gameObject.x + " Y: " + gameObject.y +
+				"\nFPS: " + Gdx.graphics.getFramesPerSecond() + " Time: " + Time.time, camera);
 
 		batch.end();
+
+		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+			Gdx.app.exit();
+		}
 	}
 
 	@Override
