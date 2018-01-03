@@ -13,16 +13,18 @@ import com.badlogic.gdx.math.Vector3;
 public class TextManager {
     private static BitmapFont bitmapFont = new BitmapFont();
     private static SpriteBatch spriteBatchHandler;
+    private static OrthographicCamera orthographicCamera;
 
-    public static void SetSpriteBatch(SpriteBatch batch) {
+    public static void SetSpriteBatch(SpriteBatch batch, OrthographicCamera camera) {
+        orthographicCamera = camera;
         bitmapFont.getData().scale(2);
         bitmapFont.setColor(Color.CYAN);
         spriteBatchHandler = batch;
     }
 
-    public static void Draw(CharSequence msg, OrthographicCamera camera) {
-        Vector3 position = new Vector3(10, 20, 0);
-        camera.unproject(position);
+    public static void Draw(CharSequence msg, float x, float y) {
+        Vector3 position = new Vector3(x, y, 0);
+        orthographicCamera.unproject(position);
         bitmapFont.draw(spriteBatchHandler, msg, position.x, position.y);
     }
 }

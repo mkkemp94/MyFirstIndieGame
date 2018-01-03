@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -14,7 +15,10 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class MyFirstIndieGame extends ApplicationAdapter {
 	SpriteBatch batch;
+	Texture img;
+
 	GameObject gameObject;
+	Player player;
 
 	// Window windowWidth and windowHeight
 	float windowWidth;
@@ -44,8 +48,12 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 		tiledMap = new TmxMapLoader().load("stage1.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
-		TextManager.SetSpriteBatch(batch);
+		TextManager.SetSpriteBatch(batch, camera);
 		gameObject = new GameObject("player.png", batch, 0, 0);
+
+		// Player
+		Texture playerTexture = new Texture("player.png");
+		player = new Player(playerTexture, 200, 500);
 
 		// Map properties
 		MapProperties properties = tiledMap.getProperties();
@@ -75,6 +83,7 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 		camera.update();
 
 		Time.Update();
+		player.Update();
 
 		tiledMapRenderer.setView(camera);
 		tiledMapRenderer.render();
@@ -85,10 +94,12 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 
 		// Render game gameObject.
 		gameObject.draw();
+		player.draw(batch);
 
 		// Draw text to screen. Useful for debugging.
 		TextManager.Draw("X: " + gameObject.x + " Y: " + gameObject.y +
-				"\nFPS: " + Gdx.graphics.getFramesPerSecond() + " Time: " + Time.time, camera);
+				"\nFPS: " + Gdx.graphics.getFramesPerSecond() + " Time: " + Time.time, 10, 20);
+		TextManager.Draw("Gravity: " + player.gravity + " Momentum: " + player.momentum, 30, 150);
 
 		batch.end();
 
@@ -100,5 +111,6 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
+		img.dispose();
 	}
 }
