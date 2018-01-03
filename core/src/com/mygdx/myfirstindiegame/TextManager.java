@@ -1,7 +1,9 @@
 package com.mygdx.myfirstindiegame;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  * Created by mkemp on 12/20/17.
@@ -15,7 +17,9 @@ public class TextManager {
         spriteBatchHandler = batch;
     }
 
-    public static void Draw(CharSequence msg) {
-        bitmapFont.draw(spriteBatchHandler, msg, 10, 20);
+    public static void Draw(CharSequence msg, OrthographicCamera camera) {
+        Vector3 position = new Vector3(10, 20, 0);
+        camera.unproject(position);
+        bitmapFont.draw(spriteBatchHandler, msg, position.x, position.y);
     }
 }
