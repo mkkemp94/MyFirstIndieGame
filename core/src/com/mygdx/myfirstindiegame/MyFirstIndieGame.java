@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -14,21 +15,28 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	GameObject gameObject;
 
+	// Window windowWidth and windowHeight
+	float windowWidth;
+	float windowHeight;
+
 	TiledMap tiledMap;
 	OrthographicCamera camera;
 	TiledMapRenderer tiledMapRenderer;
+
+	int levelPixelWidth;
+	int levelPixelHeight;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 
-		// Window width and height
-		float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
+		// Window windowWidth and windowHeight
+		windowWidth = Gdx.graphics.getWidth();
+		windowHeight = Gdx.graphics.getHeight();
 
 		// Set up camera
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, width, height);
+		camera.setToOrtho(false, windowWidth, windowHeight);
 		camera.update();
 
 		// Set up map
@@ -37,6 +45,16 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 
 		TextManager.SetSpriteBatch(batch);
 		gameObject = new GameObject("player.png", batch, 0, 0);
+
+		// Map properties
+		MapProperties properties = tiledMap.getProperties();
+		int levelWidth = properties.get("width", Integer.class); // in tiles
+		int levelHeight = properties.get("height", Integer.class); // in tiles
+		int tilePixelWidth = properties.get("tilewidth", Integer.class); // in pixels
+		int tilePixelHeight = properties.get("tileheight", Integer.class); // in pixels
+
+		levelPixelWidth = levelWidth * tilePixelWidth;
+		levelPixelHeight = levelHeight * tilePixelHeight;
 	}
 
 	@Override
@@ -50,7 +68,12 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 		GameInput.Update();
 		gameObject.updatePosition();
 
-		camera.position.set(gameObject.x, gameObject.y, 0);
+		// Center on player
+//		camera.position.set(gameObject.x, gameObject.y, 0);
+
+		// Still center, but clamp screen
+		camera.position.x = Math.min(Math.max(gameObject.x, windowWidth / 2), levelPixelWidth - windowWidth / 2);
+		camera.position.y = Math.min(Math.max(gameObject.y, windowHeight / 2), levelPixelHeight - windowHeight / 2);
 		camera.update();
 
 		tiledMapRenderer.setView(camera);
