@@ -99,7 +99,6 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 		// Draw text to screen. Useful for debugging.
 		TextManager.Draw("X: " + gameObject.x + " Y: " + gameObject.y +
 				"\nFPS: " + Gdx.graphics.getFramesPerSecond() + " Time: " + Time.time, 10, 20);
-		TextManager.Draw("Gravity: " + player.gravity + " Momentum: " + player.momentum, 30, 150);
 
 		batch.end();
 
