@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
@@ -49,11 +50,11 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
 		TextManager.SetSpriteBatch(batch, camera);
-		gameObject = new GameObject("player.png", batch, 0, 0);
+		gameObject = new GameObject("player.png", batch, 50, 50);
 
 		// Player
 		Texture playerTexture = new Texture("player.png");
-		player = new Player(playerTexture, 200, 500);
+		player = new Player(playerTexture, 200, 50, (TiledMapTileLayer) tiledMap.getLayers().get(0));
 
 		// Map properties
 		MapProperties properties = tiledMap.getProperties();
@@ -76,6 +77,8 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 
 		GameInput.Update();
 		gameObject.updatePosition();
+		player.Update();
+
 
 		// Still center, but clamp screen
 		camera.position.x = Math.min(Math.max(gameObject.x, windowWidth / 2), levelPixelWidth - windowWidth / 2);
@@ -83,7 +86,6 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 		camera.update();
 
 		Time.Update();
-		player.Update();
 
 		tiledMapRenderer.setView(camera);
 		tiledMapRenderer.render();
@@ -93,12 +95,13 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
 
 		// Render game gameObject.
-		gameObject.draw();
+		//gameObject.draw();
 		player.draw(batch);
 
 		// Draw text to screen. Useful for debugging.
-		TextManager.Draw("X: " + gameObject.x + " Y: " + gameObject.y +
-				"\nFPS: " + Gdx.graphics.getFramesPerSecond() + " Time: " + Time.time, 10, 20);
+		//TextManager.Draw("X: " + gameObject.x + " Y: " + gameObject.y +
+		//		"\nFPS: " + Gdx.graphics.getFramesPerSecond() + " Time: " + Time.time, 10, 20);
+		TextManager.Draw("FPS: " + Gdx.graphics.getFramesPerSecond() + " Time: " + Time.time, 10, 10);
 
 		batch.end();
 
@@ -110,6 +113,6 @@ public class MyFirstIndieGame extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
+//		img.dispose();
 	}
 }
